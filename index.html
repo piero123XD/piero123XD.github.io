@@ -5,13 +5,7 @@
 </head>
 <body>
     <input type="text" id="mensaje" placeholder="Escribe un mensaje" onblur="enviarMensaje()">
-    <form>
-        <h2>Formulario con 12 preguntas</h2>
-        <label for="pregunta1">Pregunta 1:</label>
-        <input type="text" id="pregunta1" name="pregunta1"><br>
-        <!-- Repite para las otras preguntas -->
-    </form>
-
+    
     <script>
         var socket = new WebSocket("ws://localhost:8768");
 
