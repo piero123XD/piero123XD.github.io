@@ -4,13 +4,17 @@
     <title>Formulario</title>
 </head>
 <body>
-    <input type="text" id="mensaje" placeholder="Escribe algo..." onkeyup="enviarMensaje()">
+    <form id="miFormulario">
+        <label for="texto">Escribe algo:</label>
+        <input type="text" id="texto" name="texto" onkeyup="enviarTexto()">
+    </form>
     <script>
-        var socket = new WebSocket("ws://localhost:8765");  // Asegúrate de especificar la dirección del servidor WebSocket correcta
-
-        function enviarMensaje() {
-            var mensaje = document.getElementById("mensaje").value;
-            socket.send(mensaje);
+        function enviarTexto() {
+            var texto = document.getElementById("texto").value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "http://localhost:8080", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("texto=" + texto);
         }
     </script>
 </body>
