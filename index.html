@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Formulario HTML</title>
+    <title>Formulario</title>
 </head>
 <body>
-  <h1>Formulario HTML</h1>
-  <form id="miFormulario">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre"><br><br>
-
-    <label for="mensaje">Mensaje:</label>
-    <textarea id="mensaje" name="mensaje" rows="4"></textarea><br><br>
-  </form>
-
-  <script>
-    const formulario = document.getElementById("miFormulario");
-    formulario.addEventListener("input", () => {
-      const nombre = document.getElementById("nombre").value;
-      const mensaje = document.getElementById("mensaje").value;
-
-      // Enviar los datos al programa PyQt5
-      const datos = { nombre, mensaje };
-      window.parent.postMessage(JSON.stringify(datos), "*");
-    });
-  </script>
+    <form>
+        <label for="texto">Escribe algo:</label>
+        <input type="text" id="texto" oninput="mostrarTexto(this.value)">
+    </form>
 </body>
+<script>
+    function mostrarTexto(texto) {
+        var mensaje = document.getElementById("mensaje");
+        mensaje.textContent = "Texto ingresado: " + texto;
+    }
+</script>
 </html>
