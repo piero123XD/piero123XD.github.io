@@ -11,10 +11,11 @@
     <script>
         function enviarTexto() {
             var texto = document.getElementById("texto").value;
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", "http://localhost:8080", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("texto=" + texto);
+            var socket = new WebSocket("ws://localhost:8765"); // Conectar al servidor de websockets
+            socket.onopen = function(event) {
+                socket.send(texto); // Enviar el texto al servidor
+                socket.close();
+            };
         }
     </script>
 </body>
