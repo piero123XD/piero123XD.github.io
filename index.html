@@ -4,15 +4,14 @@
     <title>Formulario</title>
 </head>
 <body>
-    <form>
-        <label for="texto">Escribe algo:</label>
-        <input type="text" id="texto" oninput="mostrarTexto(this.value)">
-    </form>
+    <input type="text" id="mensaje" placeholder="Escribe algo..." onkeyup="enviarMensaje()">
+    <script>
+        var socket = new WebSocket("ws://localhost:8765");  // Asegúrate de especificar la dirección del servidor WebSocket correcta
+
+        function enviarMensaje() {
+            var mensaje = document.getElementById("mensaje").value;
+            socket.send(mensaje);
+        }
+    </script>
 </body>
-<script>
-    function mostrarTexto(texto) {
-        var mensaje = document.getElementById("mensaje");
-        mensaje.textContent = "Texto ingresado: " + texto;
-    }
-</script>
 </html>
