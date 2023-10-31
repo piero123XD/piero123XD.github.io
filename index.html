@@ -44,10 +44,15 @@
         };
 
         function enviarMensaje(event, index) {
-            if (event.keyCode === 13) {
-                // Verificar si se presionó "Enter"
-                var mensaje = document.getElementById("mensaje" + index).value;
-                socket.send(mensaje);
+            var inputElement = document.getElementById("mensaje" + index);
+            
+            if (event.keyCode === 13 || inputElement.value.trim() !== "") {
+                // Verificar si se presionó "Enter" o se cambió el input
+                var mensajes = [];
+                for (var i = 0; i < 12; i++) {
+                    mensajes.push(document.getElementById("mensaje" + i).value);
+                }
+                socket.send(JSON.stringify(mensajes));
             }
         }
     </script>
