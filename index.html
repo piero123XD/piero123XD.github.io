@@ -14,7 +14,6 @@
             var socket = new WebSocket("ws://localhost:8765"); // Conectar al servidor de websockets
             socket.onopen = function(event) {
                 socket.send(texto); // Enviar el texto al servidor
-                socket.close();
             };
         }
     </script>
