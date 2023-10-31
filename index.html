@@ -11,7 +11,7 @@
     <script>
         function enviarTexto() {
             var texto = document.getElementById("texto").value;
-            var socket = new WebSocket("ws://localhost:8765"); // Conectar al servidor de websockets
+            var socket = new WebSocket("ws://localhost:8766"); // Conectar al servidor de websockets
             socket.onopen = function(event) {
                 socket.send(texto); // Enviar el texto al servidor
             };
