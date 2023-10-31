@@ -6,21 +6,19 @@
 <body>
     <div id="inputs">
         <!-- Generar 12 inputs con un bucle -->
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje0">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje1">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje3">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje4">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje5">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje6">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje7">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje8">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje9">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje10">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje11">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje0" onkeydown="enviarMensaje(event, 0)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje1" onkeydown="enviarMensaje(event, 1)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje2" onkeydown="enviarMensaje(event, 2)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje3" onkeydown="enviarMensaje(event, 3)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje4" onkeydown="enviarMensaje(event, 4)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje5" onkeydown="enviarMensaje(event, 5)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje6" onkeydown="enviarMensaje(event, 6)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje7" onkeydown="enviarMensaje(event, 7)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje8" onkeydown="enviarMensaje(event, 8)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje9" onkeydown="enviarMensaje(event, 9)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje10" onkeydown="enviarMensaje(event, 10)">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje11" onkeydown="enviarMensaje(event, 11)">
     </div>
-    
-    <button onclick="enviarMensajes()">Enviar Mensajes</button>
     
     <script>
         var socket = new WebSocket("ws://localhost:8768");
@@ -45,10 +43,10 @@
             console.error("Error en la conexión WebSocket: " + error.message);
         };
 
-        function enviarMensajes() {
-            // Obtener los valores de los 12 inputs y enviarlos como mensajes
-            for (var i = 0; i < 12; i++) {
-                var mensaje = document.getElementById("mensaje" + i).value;
+        function enviarMensaje(event, index) {
+            if (event.keyCode === 13) {
+                // Verificar si se presionó "Enter"
+                var mensaje = document.getElementById("mensaje" + index).value;
                 socket.send(mensaje);
             }
         }
