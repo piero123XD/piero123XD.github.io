@@ -40,14 +40,12 @@ radioElements.forEach(function(radioElement) {
     });
 });
 
-function enviarMensaje(id, value) {
-    var index = order.indexOf(id);
-    if (index !== -1) {
-        mensajes[index] = value || ""; // Almacena el valor en el arreglo en la posición correcta o una cadena vacía si `value` es falsy
-        var valores = mensajes.map(function (mensaje) {
-            return mensaje !== undefined ? mensaje : ""; // Mapea los valores a cadena vacía si son undefined
-        });
-        socket.send(JSON.stringify(valores));
-    }
+function enviarMensaje(valor) {
+    mensajes.push(valor); // Agrega el valor al arreglo mensajes
+    var valores = mensajes.filter(function (mensaje) {
+        return mensaje !== undefined;
+    });
+    socket.send(JSON.stringify(valores));
 }
+
 
