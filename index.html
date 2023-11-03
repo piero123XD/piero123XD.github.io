@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>2</title>
+    <title>Cliente WebSocket</title>
 </head>
 <body>
     <div id="inputs">
         <!-- Generar 12 inputs con un bucle -->
         <input type="text" placeholder="Escribe un mensaje" id="mensaje0">
-        <button onclick="editarMensaje(0)">Editar</button>
         <input type="text" placeholder="Escribe un mensaje" id="mensaje1">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje3">
@@ -20,7 +19,7 @@
         <input type="text" placeholder="Escribe un mensaje" id="mensaje10">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje11">
     </div>
-    
+
     <script>
         var socket = new WebSocket("ws://localhost:8769");
         var mensajes = [];
@@ -41,10 +40,6 @@
             }
         };
 
-        socket.onerror = function(error) {
-            console.error("Error en la conexión WebSocket: " + error.message);
-        };
-
         // Agrega un controlador de eventos "blur" a cada campo de entrada
         var inputElements = document.querySelectorAll('input[type="text"]');
         inputElements.forEach(function(inputElement, index) {
@@ -57,25 +52,6 @@
             mensajes[index] = inputElement.value;
             socket.send(JSON.stringify(mensajes));
         }
-
-        function editarMensaje(index) {
-    var inputElement = document.getElementById('mensaje' + index);
-    if (inputElement) {
-        // Habilita la edición del campo de entrada
-        inputElement.disabled = false;
-        inputElement.focus();
-        inputElement.select(); // Selecciona el texto para facilitar la edición
-        inputElement.addEventListener('blur', function() {
-            // Cuando se pierde el foco, guarda el mensaje editado
-            mensajes[index] = inputElement.value;
-
-            // Envía el mensaje editado al servidor
-            socket.send(JSON.stringify(mensajes));
-            inputElement.disabled = true; // Vuelve a deshabilitar el campo de entrada
-        });
-    }
-}
-        
     </script>
 </body>
 </html>
