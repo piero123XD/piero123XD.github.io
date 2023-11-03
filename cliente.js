@@ -25,7 +25,7 @@ socket.onerror = function(error) {
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement, inputElement.value, 'text');
+        enviarMensaje(inputElement.id, inputElement.value);
     });
 });
 
@@ -33,11 +33,11 @@ textAndEmailElements.forEach(function(inputElement) {
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement, radioElement.value, 'radio');
+        enviarMensaje(radioElement.id, radioElement.value);
     });
 });
 
-function enviarMensaje(inputElement, value, type) {
-    mensajes.push({ type, value }); // Agregar un objeto con tipo y valor al arreglo
+function enviarMensaje(id, value) {
+    mensajes.push({ id, value }); // Agregar un objeto con la ID y el valor al arreglo
     socket.send(JSON.stringify(mensajes));
 }
