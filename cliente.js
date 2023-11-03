@@ -43,7 +43,7 @@ radioElements.forEach(function(radioElement) {
 function enviarMensaje(id, value) {
     var index = order.indexOf(id);
     if (index !== -1) {
-        mensajes[index] = { id, value }; // Agregar un objeto con la ID y el valor al arreglo en la posición correcta
+        mensajes[index] = value; // Agregar solo el valor al arreglo mensajes en la posición correcta
         socket.send(JSON.stringify(mensajes));
     }
 }
