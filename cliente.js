@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var valoresCampos = {};
+var mensajes = [];
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -21,12 +21,14 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
+// Definir el orden deseado de las IDs de los campos
+var order = ['mensaje0', 'mensaje1', 'mensaje2', 'mensaje3', 'mensaje4', 'mensaje5', 'mensaje6', 'mensaje7', 'mensaje8', 'mensaje9', 'mensaje10', 'mensaje11'];
+
 // Agregar un controlador de eventos "blur" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        valoresCampos[inputElement.id] = inputElement.value;
-        enviarMensaje(valoresCampos);
+        enviarMensaje(inputElement.id, inputElement.value);
     });
 });
 
@@ -34,16 +36,14 @@ textAndEmailElements.forEach(function(inputElement) {
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        valoresCampos[radioElement.id] = radioElement.value;
-        enviarMensaje(valoresCampos);
+        enviarMensaje(radioElement.id, radioElement.value);
     });
 });
 
-function enviarMensaje(valoresCampos) {
-    // Ordenar los valores de los campos en función de sus ID
-    var camposOrdenados = Object.keys(valoresCampos).sort().map(function(id) {
-        return { id: id, value: valoresCampos[id] };
-    });
-
-    socket.send(JSON.stringify(camposOrdenados));
+function enviarMensaje(id, value) {
+    var index = order.indexOf(id);
+    if (index !== -1) {
+        mensajes[index] = { id, value }; // Agregar un objeto con la ID y el valor al arreglo en la posición correcta
+        socket.send(JSON.stringify(mensajes));
+    }
 }
