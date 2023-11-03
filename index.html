@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>prueba 1</title>
+    <title>2</title>
 </head>
 <body>
     <div id="inputs">
@@ -51,10 +51,10 @@
             console.error("Error en la conexión WebSocket: " + error.message);
         };
 
-        // Agrega un controlador de eventos "input" a cada campo de entrada
+        // Agrega un controlador de eventos "blur" a cada campo de entrada
         var inputElements = document.querySelectorAll('input[type="text"]');
         inputElements.forEach(function(inputElement, index) {
-            inputElement.addEventListener('input', function(event) {
+            inputElement.addEventListener('blur', function(event) {
                 enviarMensaje(inputElement, index);
             });
         });
