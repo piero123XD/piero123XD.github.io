@@ -7,6 +7,7 @@
     <div id="inputs">
         <!-- Generar 12 inputs con un bucle -->
         <input type="text" placeholder="Escribe un mensaje" id="mensaje0">
+        <button onclick="editarMensaje(0)">Editar</button>
         <input type="text" placeholder="Escribe un mensaje" id="mensaje1">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje3">
@@ -56,6 +57,24 @@
             mensajes[index] = inputElement.value;
             socket.send(JSON.stringify(mensajes));
         }
+
+        function editarMensaje(index) {
+    var inputElement = document.getElementById('mensaje' + index);
+    if (inputElement) {
+        // Habilita la edición del campo de entrada
+        inputElement.disabled = false;
+        inputElement.focus();
+        inputElement.select(); // Selecciona el texto para facilitar la edición
+        inputElement.addEventListener('blur', function() {
+            // Cuando se pierde el foco, guarda el mensaje editado y envíalo al servidor
+            mensajes[index] = inputElement.value;
+            socket.send(JSON.stringify(mensajes));
+            inputElement.disabled = true; // Vuelve a deshabilitar el campo de entrada
+        });
+    }
+}
+
+        
     </script>
 </body>
 </html>
