@@ -49,7 +49,7 @@
             if (event.keyCode === 13 || inputElement.value.trim() !== "") {
                 // Verificar si se presionó "Enter" o se cambió el input
                 var mensajes = [];
-                for (var i = 0; i < 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999; i++) {
+                for (var i = 0; i < 12; i++) {
                     mensajes.push(document.getElementById("mensaje" + i).value);
                 }
                 socket.send(JSON.stringify(mensajes));
