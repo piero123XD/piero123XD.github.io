@@ -29,6 +29,13 @@ inputElements.forEach(function(inputElement, index) {
     });
 });
 
+// Con esta nueva parte de código
+inputElements.forEach(function(inputElement, index) {
+    inputElement.addEventListener('input', function(event) {
+        enviarMensaje(inputElement, index);
+    });
+});
+
 function enviarMensaje(inputElement, index) {
     mensajes[index] = inputElement.value;
     socket.send(JSON.stringify(mensajes));
