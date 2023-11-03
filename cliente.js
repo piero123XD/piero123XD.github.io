@@ -43,12 +43,10 @@ radioElements.forEach(function(radioElement) {
 function enviarMensaje(id, value) {
     var index = order.indexOf(id);
     if (index !== -1) {
-        mensajes[index] = value;
-        // Crear un nuevo arreglo solo con los valores y enviarlo
-        var valores = mensajes.filter(function (mensaje) {
-            return mensaje !== undefined;
+        mensajes[index] = value; // Almacena solo el valor en el arreglo en la posición correcta
+        var valores = mensajes.map(function (mensaje) {
+            return mensaje !== undefined ? mensaje : ""; // Reemplaza los valores no definidos con una cadena vacía
         });
         socket.send(JSON.stringify(valores));
     }
 }
-
