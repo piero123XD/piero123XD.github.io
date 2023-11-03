@@ -1,5 +1,6 @@
-var socket = new WebSocket("ws://localhost:8770");
-var mensajes = {};
+var socket = new WebSocket("ws://localhost:8769");
+var mensajes = {}; // Usamos un objeto para almacenar los datos con claves únicas
+var order = []; // Usamos un array para mantener el orden de los campos
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -24,21 +25,32 @@ socket.onerror = function(error) {
 // Agregar un controlador de eventos "blur" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement, index) {
+    // Usar el id como clave única en el objeto mensajes
+    mensajes[inputElement.id] = inputElement.value;
+    order[index] = inputElement.id;
+
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement, index);
+        enviarMensaje(inputElement.id);
     });
 });
 
 // Agregar un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement, index) {
+    // Usar el id como clave única en el objeto mensajes
+    mensajes[radioElement.id] = radioElement.checked;
+    order[index] = radioElement.id;
+
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement, index);
+        enviarMensaje(radioElement.id);
     });
 });
 
-function enviarMensaje(inputElement, index) {
-    // Utilizar el índice como clave en lugar del id
-    mensajes[index] = inputElement.value;
-    socket.send(JSON.stringify(mensajes));
+function enviarMensaje(inputId) {
+    // Crear un array ordenado de acuerdo al orden de los campos
+    var orderedData = order.map(function (id) {
+        return mensajes[id];
+    });
+
+    socket.send(JSON.stringify(orderedData));
 }
