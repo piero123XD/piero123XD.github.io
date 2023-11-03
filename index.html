@@ -5,7 +5,7 @@
 </head>
 <body>
     <div id="inputs">
-        <!-- Genera 12 inputs con un bucle -->
+        <!-- Generar 12 inputs con un bucle -->
         <input type="text" placeholder="Escribe un mensaje" id="mensaje0">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje1">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
@@ -22,6 +22,7 @@
     
     <script>
         var socket = new WebSocket("ws://localhost:8769");
+        var mensajes = [];
 
         socket.onopen = function(event) {
             console.log("Conexión WebSocket abierta");
@@ -43,19 +44,16 @@
             console.error("Error en la conexión WebSocket: " + error.message);
         };
 
-        // Agrega un controlador de eventos "input" a cada campo de entrada
+        // Agrega un controlador de eventos "blur" a cada campo de entrada
         var inputElements = document.querySelectorAll('input[type="text"]');
         inputElements.forEach(function(inputElement, index) {
-            inputElement.addEventListener('input', function(event) {
-                enviarMensajesEnTiempoReal();
+            inputElement.addEventListener('blur', function(event) {
+                enviarMensaje(inputElement, index);
             });
         });
 
-        function enviarMensajesEnTiempoReal() {
-            var mensajes = [];
-            inputElements.forEach(function(inputElement) {
-                mensajes.push(inputElement.value);
-            });
+        function enviarMensaje(inputElement, index) {
+            mensajes[index] = inputElement.value;
             socket.send(JSON.stringify(mensajes));
         }
     </script>
