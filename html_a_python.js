@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://localhost:8768");
+var socket = new WebSocket("ws://localhost:8769");
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
