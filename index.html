@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>1</title>
+    <title>2</title>
 </head>
 <body>
     <div id="inputs">
@@ -66,14 +66,15 @@
         inputElement.focus();
         inputElement.select(); // Selecciona el texto para facilitar la edición
         inputElement.addEventListener('blur', function() {
-            // Cuando se pierde el foco, guarda el mensaje editado y envíalo al servidor
+            // Cuando se pierde el foco, guarda el mensaje editado
             mensajes[index] = inputElement.value;
+
+            // Envía el mensaje editado al servidor
             socket.send(JSON.stringify(mensajes));
             inputElement.disabled = true; // Vuelve a deshabilitar el campo de entrada
         });
     }
 }
-
         
     </script>
 </body>
