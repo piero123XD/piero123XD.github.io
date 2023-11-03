@@ -21,7 +21,6 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"]');
 inputElements.forEach(function(inputElement, index) {
     inputElement.addEventListener('blur', function(event) {
@@ -29,14 +28,22 @@ inputElements.forEach(function(inputElement, index) {
     });
 });
 
-// Con esta nueva parte de código
-inputElements.forEach(function(inputElement, index) {
-    inputElement.addEventListener('input', function(event) {
-        enviarMensaje(inputElement, index);
-    });
-});
-
 function enviarMensaje(inputElement, index) {
     mensajes[index] = inputElement.value;
-    socket.send(JSON.stringify(mensajes));
+
+    // Comprueba si se han ingresado los 12 mensajes
+    if (mensajes.length === 12) {
+        // Habilita la edición y el envío de mensajes editados
+        habilitarEdicion();
+    }
+}
+
+function habilitarEdicion() {
+    inputElements.forEach(function(inputElement, index) {
+        inputElement.removeAttribute("readonly"); // Permite la edición
+        inputElement.addEventListener('blur', function(event) {
+            mensajes[index] = inputElement.value;
+            socket.send(JSON.stringify(mensajes));
+        });
+    });
 }
