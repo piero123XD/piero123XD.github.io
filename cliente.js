@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = [];
+var valoresCampos = {};
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -25,7 +25,8 @@ socket.onerror = function(error) {
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement.id, inputElement.value);
+        valoresCampos[inputElement.id] = inputElement.value;
+        enviarMensaje(valoresCampos);
     });
 });
 
@@ -33,11 +34,16 @@ textAndEmailElements.forEach(function(inputElement) {
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement.id, radioElement.value);
+        valoresCampos[radioElement.id] = radioElement.value;
+        enviarMensaje(valoresCampos);
     });
 });
 
-function enviarMensaje(id, value) {
-    mensajes.push({ id, value }); // Agregar un objeto con la ID y el valor al arreglo
-    socket.send(JSON.stringify(mensajes));
+function enviarMensaje(valoresCampos) {
+    // Ordenar los valores de los campos en función de sus ID
+    var camposOrdenados = Object.keys(valoresCampos).sort().map(function(id) {
+        return { id: id, value: valoresCampos[id] };
+    });
+
+    socket.send(JSON.stringify(camposOrdenados));
 }
