@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = {};
+var mensajes = [];
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -22,21 +22,22 @@ socket.onerror = function(error) {
 };
 
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
-inputElements.forEach(function(inputElement, index) {
+inputElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement, index);
+        enviarMensaje(inputElement);
     });
 });
 
 var radioElements = document.querySelectorAll('input[type="radio"]');
-radioElements.forEach(function(radioElement, index) {
+radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement, index);
+        enviarMensaje(radioElement);
     });
 });
 
-function enviarMensaje(inputElement, index) {
+function enviarMensaje(inputElement) {
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    mensajes[index] = valor;
+    var orden = inputElement.getAttribute('data-orden'); // Obtenemos el atributo data-orden
+    mensajes[orden] = valor;
     socket.send(JSON.stringify(mensajes));
 }
