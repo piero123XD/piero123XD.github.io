@@ -44,8 +44,8 @@ function enviarMensaje(id, value) {
     var index = order.indexOf(id);
     if (index !== -1) {
         mensajes[index] = value; // Almacena solo el valor en el arreglo en la posición correcta
-        var valores = mensajes.map(function (mensaje) {
-            return mensaje !== undefined ? mensaje : ""; // Reemplaza los valores no definidos con una cadena vacía
+        var valores = mensajes.filter(function (mensaje) {
+            return mensaje !== undefined;
         });
         socket.send(JSON.stringify(valores));
     }
