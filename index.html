@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>3</title>
+    <title>4s</title>
 </head>
 <body>
     <div id="inputs">
@@ -38,6 +38,10 @@
             } else {
                 console.error("Conexión WebSocket cerrada de manera inesperada");
             }
+        };
+
+        socket.onerror = function(error) {
+            console.error("Error en la conexión WebSocket: " + error.message);
         };
 
         // Agrega un controlador de eventos "blur" a cada campo de entrada
