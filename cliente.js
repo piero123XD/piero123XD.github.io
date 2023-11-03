@@ -22,10 +22,18 @@ socket.onerror = function(error) {
 };
 
 // Agregar un controlador de eventos "blur" a los campos de texto y correo electrónico
-var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"], input[type="radio"]');
+var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement, index) {
     inputElement.addEventListener('blur', function(event) {
         enviarMensaje(inputElement, index);
+    });
+});
+
+// Agregar un controlador de eventos "change" a los campos de opción de radio
+var radioElements = document.querySelectorAll('input[type="radio"]');
+radioElements.forEach(function(radioElement, index) {
+    radioElement.addEventListener('change', function(event) {
+        enviarMensaje(radioElement, index);
     });
 });
 
