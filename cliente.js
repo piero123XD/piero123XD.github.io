@@ -1,5 +1,5 @@
-var socket = new WebSocket("ws://localhost:8770");
-var mensajes = [];
+var socket = new WebSocket("ws://localhost:8769");
+var mensajes = {};
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -23,21 +23,21 @@ socket.onerror = function(error) {
 
 // Agregar un controlador de eventos "blur" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
-textAndEmailElements.forEach(function(inputElement, index) {
+textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement, index);
+        enviarMensaje(inputElement);
     });
 });
 
 // Agregar un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
-radioElements.forEach(function(radioElement, index) {
+radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement, index);
+        enviarMensaje(radioElement);
     });
 });
 
-function enviarMensaje(inputElement, index) {
-    mensajes[index] = inputElement.value;
+function enviarMensaje(inputElement) {
+    mensajes[inputElement.id] = inputElement.value;
     socket.send(JSON.stringify(mensajes));
 }
