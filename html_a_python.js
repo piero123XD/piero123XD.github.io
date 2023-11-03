@@ -21,6 +21,7 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
+// Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"]');
 inputElements.forEach(function(inputElement, index) {
     inputElement.addEventListener('blur', function(event) {
@@ -31,9 +32,9 @@ inputElements.forEach(function(inputElement, index) {
 function enviarMensaje(inputElement, index) {
     mensajes[index] = inputElement.value;
 
-    // Comprueba si se han ingresado los 12 mensajes
+    // Verifica si se han ingresado todos los mensajes
     if (mensajes.length === 12) {
-        // Habilita la edición y el envío de mensajes editados
+        // Habilita la edición y envío de mensajes editados
         habilitarEdicion();
     }
 }
