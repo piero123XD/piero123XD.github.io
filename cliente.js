@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = [];
+var contadorMensajes = 0;
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -37,7 +37,7 @@ radioElements.forEach(function(radioElement) {
 
 function enviarMensaje(inputElement) {
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    var orden = inputElement.getAttribute('data-orden'); // Obtenemos el atributo data-orden
-    mensajes[orden] = valor;
-    socket.send(JSON.stringify(mensajes));
+    var idMensaje = "mensaje" + contadorMensajes;
+    contadorMensajes++;
+    socket.send(JSON.stringify({ [idMensaje]: valor }));
 }
