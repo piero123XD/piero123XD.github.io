@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = [];
+var mensajes = {};
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -21,14 +21,13 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Definir el orden deseado de las IDs de los campos
-var order = ['mensaje0', 'mensaje1', 'mensaje2', 'mensaje3', 'mensaje4', 'mensaje5', 'mensaje6', 'mensaje7', 'mensaje8', 'mensaje9', 'mensaje10', 'mensaje11'];
-
 // Agregar un controlador de eventos "blur" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement.id, inputElement.value);
+        var id = inputElement.id;
+        var value = inputElement.value;
+        enviarMensaje(id, value);
     });
 });
 
@@ -36,16 +35,14 @@ textAndEmailElements.forEach(function(inputElement) {
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement.id, radioElement.value);
+        var id = radioElement.id;
+        var value = radioElement.value;
+        enviarMensaje(id, value);
     });
 });
 
-function enviarMensaje(valor) {
-    mensajes.push(valor); // Agrega el valor al arreglo mensajes
-    var valores = mensajes.filter(function (mensaje) {
-        return mensaje !== undefined;
-    });
+function enviarMensaje(id, value) {
+    mensajes[id] = value; // Almacena el valor en un objeto con el id como clave
+    var valores = Object.values(mensajes); // Obtiene solo los valores del objeto
     socket.send(JSON.stringify(valores));
 }
-
-
