@@ -8,7 +8,7 @@
         <!-- Genera 12 campos de entrada con un bucle -->
         <input type="text" placeholder="Escribe un mensaje" id="mensaje0">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje1">
-        <input type text" placeholder="Escribe un mensaje" id="mensaje2">
+        <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje3">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje4">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje5">
@@ -43,7 +43,12 @@
             console.error("Error en la conexión WebSocket: " + error.message);
         };
 
-        function enviarMensajes() {
+        // Agrega un controlador de eventos "input" a cada campo de entrada
+        for (var i = 0; i < 12; i++) {
+            document.getElementById("mensaje" + i).addEventListener('input', enviarMensajeEnTiempoReal);
+        }
+
+        function enviarMensajeEnTiempoReal(event) {
             var mensajes = [];
             for (var i = 0; i < 12; i++) {
                 mensajes.push(document.getElementById("mensaje" + i).value);
