@@ -21,25 +21,32 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Agrega un controlador de eventos "blur" a cada campo de entrada
-var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
-inputElements.forEach(function(inputElement, index) {
+// Definir el orden deseado de las IDs de los campos
+var order = ['mensaje0', 'mensaje1', 'mensaje2', 'mensaje3', 'mensaje4', 'mensaje5', 'mensaje6', 'mensaje7', 'mensaje8', 'mensaje9', 'mensaje10', 'mensaje11'];
+
+// Agregar un controlador de eventos "blur" a los campos de texto y correo electrónico
+var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
+textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement, index);
+        enviarMensaje(inputElement.id, inputElement.value);
     });
 });
 
-// Agrega un controlador de eventos "change" a los campos de opción de radio
+// Agregar un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
-radioElements.forEach(function(radioElement, index) {
+radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement, index);
+        enviarMensaje(radioElement.id, radioElement.value);
     });
 });
 
-function enviarMensaje(inputElement, index) {
-    // Verifica el tipo de campo y obtén el valor adecuado
-    var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    mensajes[index] = valor;
-    socket.send(JSON.stringify(mensajes));
+function enviarMensaje(id, value) {
+    var index = order.indexOf(id);
+    if (index !== -1) {
+        mensajes[index] = value; // Almacena solo el valor en el arreglo en la posición correcta
+        var valores = mensajes.filter(function (mensaje) {
+            return mensaje !== undefined;
+        });
+        socket.send(JSON.stringify(valores));
+    }
 }
