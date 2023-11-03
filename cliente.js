@@ -2,7 +2,7 @@ var socket = new WebSocket("ws://localhost:8770");
 var mensajes = {};
 
 socket.onopen = function(event) {
-    console.log("Conexión WebSocket abierta 2");
+    console.log("Conexión WebSocket abierta");
 };
 
 socket.onmessage = function(event) {
@@ -21,36 +21,29 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Almacena una lista de los IDs de los elementos en el orden en que aparecen
-var elementIds = [];
-
+// Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 inputElements.forEach(function(inputElement) {
-    elementIds.push(inputElement.id); // Almacena el ID
     inputElement.addEventListener('blur', function(event) {
         enviarMensaje(inputElement);
     });
 });
 
+// Agrega un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
-    elementIds.push(radioElement.id); // Almacena el ID
     radioElement.addEventListener('change', function(event) {
         enviarMensaje(radioElement);
     });
 });
 
 function enviarMensaje(inputElement) {
+    // Obtiene el valor del campo de entrada
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    var id = inputElement.id; // Obtiene el ID del elemento
-    mensajes[id] = valor; // Utiliza el ID como clave en el objeto mensajes
-    var mensajesOrdenados = {};
-
-    // Recorre los IDs en el orden original y crea un nuevo objeto
-    for (var i = 0; i < elementIds.length; i++) {
-        var elementId = elementIds[i];
-        mensajesOrdenados[elementId] = mensajes[elementId];
-    }
-
-    socket.send(JSON.stringify(mensajesOrdenados));
+    // Obtiene el ID del elemento
+    var id = inputElement.id;
+    // Almacena el valor en el objeto mensajes utilizando el ID como clave
+    mensajes[id] = valor;
+    // Envia el objeto mensajes al servidor
+    socket.send(JSON.stringify(mensajes));
 }
