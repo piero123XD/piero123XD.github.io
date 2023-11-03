@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cliente WebSocket</title>
+    <title>prueba 1</title>
 </head>
 <body>
     <div id="inputs">
@@ -19,9 +19,14 @@
         <input type="text" placeholder="Escribe un mensaje" id="mensaje10">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje11">
     </div>
-    
+
+    <div id="mensajesEnTiempoReal">
+        <!-- Aquí se mostrarán los mensajes en tiempo real -->
+    </div>
+
     <script>
         var socket = new WebSocket("ws://localhost:8769");
+        var mensajes = [];
 
         socket.onopen = function(event) {
             console.log("Conexión WebSocket abierta");
@@ -29,6 +34,9 @@
 
         socket.onmessage = function(event) {
             console.log("Mensaje recibido del servidor: " + event.data);
+            // Agregar el mensaje recibido al elemento de visualización en tiempo real
+            var mensajesEnTiempoReal = document.getElementById("mensajesEnTiempoReal");
+            mensajesEnTiempoReal.textContent += event.data + "\n";
         };
 
         socket.onclose = function(event) {
@@ -47,13 +55,13 @@
         var inputElements = document.querySelectorAll('input[type="text"]');
         inputElements.forEach(function(inputElement, index) {
             inputElement.addEventListener('input', function(event) {
-                enviarLetra(inputElement, index);
+                enviarMensaje(inputElement, index);
             });
         });
 
-        function enviarLetra(inputElement, index) {
-            var letra = inputElement.value.charAt(inputElement.value.length - 1);
-            socket.send(letra);
+        function enviarMensaje(inputElement, index) {
+            mensajes[index] = inputElement.value;
+            socket.send(JSON.stringify(mensajes));
         }
     </script>
 </body>
