@@ -21,30 +21,15 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Agrega un controlador de eventos "blur" a cada campo de entrada
+// Agrega un controlador de eventos "input" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"]');
 inputElements.forEach(function(inputElement, index) {
-    inputElement.addEventListener('blur', function(event) {
+    inputElement.addEventListener('input', function(event) {
         enviarMensaje(inputElement, index);
     });
 });
 
 function enviarMensaje(inputElement, index) {
     mensajes[index] = inputElement.value;
-
-    // Verifica si se han ingresado todos los mensajes
-    if (mensajes.length === 12) {
-        // Habilita la edición y envío de mensajes editados
-        habilitarEdicion();
-    }
-}
-
-function habilitarEdicion() {
-    inputElements.forEach(function(inputElement, index) {
-        inputElement.removeAttribute("readonly"); // Permite la edición
-        inputElement.addEventListener('blur', function(event) {
-            mensajes[index] = inputElement.value;
-            socket.send(JSON.stringify(mensajes));
-        });
-    });
+    socket.send(JSON.stringify(mensajes));
 }
