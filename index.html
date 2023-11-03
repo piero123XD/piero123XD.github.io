@@ -5,19 +5,10 @@
 </head>
 <body>
     <div id="inputs">
-        <!-- Genera 12 campos de entrada con un bucle -->
+        <!-- Puedes tener cualquier cantidad de campos de entrada -->
         <input type="text" placeholder="Escribe un mensaje" id="mensaje0">
         <input type="text" placeholder="Escribe un mensaje" id="mensaje1">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje3">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje4">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje5">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje6">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje7">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje8">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje9">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje10">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje11">
+        <!-- Agrega más campos de entrada según sea necesario -->
     </div>
     
     <script>
@@ -44,15 +35,18 @@
         };
 
         // Agrega un controlador de eventos "input" a cada campo de entrada
-        for (var i = 0; i < 12; i++) {
-            document.getElementById("mensaje" + i).addEventListener('input', enviarMensajeEnTiempoReal);
-        }
+        var inputElements = document.querySelectorAll('input[type="text"]');
+        inputElements.forEach(function(inputElement, index) {
+            inputElement.addEventListener('input', function(event) {
+                enviarDatosEnTiempoReal();
+            });
+        });
 
-        function enviarMensajeEnTiempoReal(event) {
+        function enviarDatosEnTiempoReal() {
             var mensajes = [];
-            for (var i = 0; i < 12; i++) {
-                mensajes.push(document.getElementById("mensaje" + i).value);
-            }
+            inputElements.forEach(function(inputElement) {
+                mensajes.push(inputElement.value);
+            });
             socket.send(JSON.stringify(mensajes));
         }
     </script>
