@@ -1,5 +1,6 @@
 var socket = new WebSocket("ws://localhost:8770");
 var mensajes = {};
+var valoresPorID = {}; // Agregar el objeto para el seguimiento de valores por ID
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -20,6 +21,9 @@ socket.onclose = function(event) {
 socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
+
+// Resto del código...
+
 
 // Objeto para mantener un seguimiento de los valores por orden de ID
 var valoresPorID = {};
