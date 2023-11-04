@@ -1,4 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
+var contador = 0;
 var mensajes = {};
 
 socket.onopen = function(event) {
@@ -24,6 +25,8 @@ socket.onerror = function(error) {
 // Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 inputElements.forEach(function(inputElement) {
+    var id = "mensaje" + contador++;
+    inputElement.id = id; // Asigna un ID único a cada elemento
     inputElement.addEventListener('blur', function(event) {
         enviarMensaje(inputElement);
     });
@@ -32,24 +35,16 @@ inputElements.forEach(function(inputElement) {
 // Agrega un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
+    var id = "mensaje" + contador++;
+    radioElement.id = id; // Asigna un ID único a cada elemento
     radioElement.addEventListener('change', function(event) {
         enviarMensaje(radioElement);
     });
 });
 
 function enviarMensaje(inputElement) {
-    // Obtiene el valor del campo de entrada
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    // Obtiene el ID del elemento
     var id = inputElement.id;
-    // Almacena el valor en el objeto mensajes utilizando el ID como clave
     mensajes[id] = valor;
-
-    // Envía los mensajes al servidor en orden alfabético de los IDs
-    var mensajesOrdenados = {};
-    Object.keys(mensajes).sort().forEach(function(key) {
-        mensajesOrdenados[key] = mensajes[key];
-    });
-
-    socket.send(JSON.stringify(mensajesOrdenados));
+    socket.send(JSON.stringify(mensajes));
 }
