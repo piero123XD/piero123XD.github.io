@@ -1,5 +1,4 @@
 var socket = new WebSocket("ws://localhost:8770");
-var contador = 0;
 var mensajes = {};
 
 socket.onopen = function(event) {
@@ -22,29 +21,43 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
+// Almacena una lista de los IDs de los elementos en el orden en que aparecen
+var elementIds = [];
+
 // Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 inputElements.forEach(function(inputElement) {
-    var id = "mensaje" + contador++;
-    inputElement.id = id; // Asigna un ID único a cada elemento
+    var id = inputElement.id;
+    elementIds.push(id);
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement);
+        enviarMensaje(id);
     });
 });
 
 // Agrega un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
-    var id = "mensaje" + contador++;
-    radioElement.id = id; // Asigna un ID único a cada elemento
+    var id = radioElement.id;
+    elementIds.push(id);
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement);
+        enviarMensaje(id);
     });
 });
 
-function enviarMensaje(inputElement) {
+function enviarMensaje(id) {
+    var inputElement = document.getElementById(id);
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    var id = inputElement.id;
     mensajes[id] = valor;
-    socket.send(JSON.stringify(mensajes));
+
+    // Verifica si todos los mensajes han sido capturados
+    if (elementIds.every(function(elementId) {
+        return mensajes[elementId] !== undefined;
+    })) {
+        // Ordena los mensajes en función del orden de los IDs y los envía
+        var mensajesOrdenados = {};
+        elementIds.forEach(function(elementId) {
+            mensajesOrdenados[elementId] = mensajes[elementId];
+        });
+        socket.send(JSON.stringify(mensajesOrdenados));
+    }
 }
