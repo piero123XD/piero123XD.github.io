@@ -24,7 +24,7 @@ socket.onerror = function(error) {
 };
 
 // Arreglo inicial con diez elementos vacíos
-var valoresPorID = ["", "", "", "", "", "", "", "", "", ""];
+var valoresPorID = ["", "", "", "", "", "", "", "", "", "", "", ""];
 
 // Agregar un controlador de eventos "input" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
