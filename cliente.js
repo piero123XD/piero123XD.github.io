@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = {};
+var mensajes = [];
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -23,32 +23,31 @@ socket.onerror = function(error) {
 
 // Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
-inputElements.forEach(function(inputElement, index) {
-    var id = "mensaje" + pad(index, 2); // Función para formatear el ID
-    inputElement.id = id; // Asigna un ID único a cada elemento
+inputElements.forEach(function(inputElement) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement, id);
+        enviarMensaje(inputElement);
     });
 });
 
 // Agrega un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
-radioElements.forEach(function(radioElement, index) {
-    var id = "mensaje" + pad(index, 2); // Función para formatear el ID
-    radioElement.id = id; // Asigna un ID único a cada elemento
+radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement, id);
+        enviarMensaje(radioElement);
     });
 });
 
-// Función para formatear el ID con ceros a la izquierda
-function pad(num, size) {
-    var s = "00" + num;
-    return s.substr(s.length - size);
-}
-
-function enviarMensaje(inputElement, id) {
+function enviarMensaje(inputElement) {
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    mensajes[id] = valor;
+    var id = inputElement.id;
+    // Obtener el índice del mensaje correspondiente o agregar uno nuevo
+    var index = mensajes.findIndex(function(mensaje) {
+        return mensaje.id === id;
+    });
+    if (index !== -1) {
+        mensajes[index].valor = valor;
+    } else {
+        mensajes.push({ id: id, valor: valor });
+    }
     socket.send(JSON.stringify(mensajes));
 }
