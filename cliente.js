@@ -45,11 +45,9 @@ function enviarMensaje(inputElement) {
     // Almacena el valor en el objeto mensajes utilizando el ID como clave
     mensajes[id] = valor;
 
-    // Envía los mensajes al servidor en orden ascendente de los IDs
+    // Envía los mensajes al servidor en orden alfabético de los IDs
     var mensajesOrdenados = {};
-    Object.keys(mensajes).sort(function(a, b) {
-        return parseInt(a.match(/\d+/)) - parseInt(b.match(/\d+/));
-    }).forEach(function(key) {
+    Object.keys(mensajes).sort().forEach(function(key) {
         mensajesOrdenados[key] = mensajes[key];
     });
 
