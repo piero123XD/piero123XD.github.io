@@ -44,9 +44,11 @@ function enviarMensaje(inputElement) {
     // Almacena el valor en el objeto valoresPorID usando el ID como clave
     var valor = inputElement.value;
     
-    // Si el valor es null, cambia el valor a la cadena "null"
+    // Si el valor es null o una cadena en blanco, cambia el valor a la cadena "null" o "vacio" respectivamente
     if (valor === null) {
         valor = "null";
+    } else if (valor.trim() === "") {
+        valor = "vacio";
     }
 
     valoresPorID[inputElement.id] = valor;
