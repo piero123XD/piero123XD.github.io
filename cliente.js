@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = {};
+var mensajes = {"","","","","","","","","","","",""};
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -43,19 +43,12 @@ radioElements.forEach(function(radioElement) {
 function enviarMensaje(inputElement) {
     // Almacena el valor en el objeto valoresPorID usando el ID como clave
     valoresPorID[inputElement.id] = inputElement.value;
-
+    
     // Crea un arreglo de valores ordenados por ID
     var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
-        return valoresPorID[id] || ""; // Si el valor es nulo o indefinido, usa una cadena vacía
+        return valoresPorID[id];
     });
-
-    // Asegúrate de que el arreglo tenga exactamente 10 elementos
-    while (valoresOrdenados.length < 12) {
-        valoresOrdenados.push("");
-    }
-
+    
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
 }
-
-
