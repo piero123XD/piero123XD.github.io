@@ -41,21 +41,15 @@ radioElements.forEach(function(radioElement) {
 });
 
 function enviarMensaje(inputElement) {
-    // Asigna un valor vacío si el campo está vacío
-    var valor = inputElement.value || '';
-
-    // Si es un campo de tipo radio, verifica si está marcado y asigna "on" o un valor vacío
-    if (inputElement.type === 'radio') {
-        valor = inputElement.checked ? 'on' : '';
-    }
-
-    valoresPorID[inputElement.id] = valor;
-
+    // Almacena el valor en el objeto valoresPorID usando el ID como clave
+    valoresPorID[inputElement.id] = inputElement.value;
+    
     // Crea un arreglo de valores ordenados por ID
-    var valoresOrdenados = [].slice.call(document.querySelectorAll('input')).map(function (el) {
-        return valoresPorID[el.id] || '';
+    var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
+        // Agregar 5 espacios en blanco al final de cada valor
+        return valoresPorID[id].padEnd(valoresPorID[id].length + 5, ' ');
     });
-
+    
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
 }
