@@ -1,6 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
 var mensajes = {};
-var valoresPorID = {}; // Agregar el objeto para el seguimiento de valores por ID
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -22,10 +21,7 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Resto del código...
-
-
-// Objeto para mantener un seguimiento de los valores por orden de ID
+// Objeto para mantener un seguimiento de los valores por ID
 var valoresPorID = {};
 
 // Agregar un controlador de eventos "input" a los campos de texto y correo electrónico
@@ -49,7 +45,9 @@ function enviarMensaje(inputElement) {
     valoresPorID[inputElement.id] = inputElement.value;
     
     // Crea un arreglo de valores ordenados por ID
-    var valoresOrdenados = Object.values(valoresPorID).filter(Boolean);
+    var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
+        return valoresPorID[id];
+    });
     
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
