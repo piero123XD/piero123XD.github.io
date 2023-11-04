@@ -44,14 +44,15 @@ function enviarMensaje(inputElement) {
     // Almacena el valor en el objeto valoresPorID usando el ID como clave
     valoresPorID[inputElement.id] = inputElement.value;
 
-    // Crea un arreglo de 10 elementos, todos inicializados con una cadena vacía
-    var valoresOrdenados = new Array(12).fill("");
-
-    // Llena el arreglo con los valores actualizados
-    Object.keys(valoresPorID).forEach(function(id) {
-        var index = parseInt(id) - 1; // Asumiendo que los IDs son números consecutivos
-        valoresOrdenados[index] = valoresPorID[id];
+    // Crea un arreglo de valores ordenados por ID
+    var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
+        return valoresPorID[id] || ""; // Si el valor es nulo o indefinido, usa una cadena vacía
     });
+
+    // Asegúrate de que el arreglo tenga exactamente 10 elementos
+    while (valoresOrdenados.length < 12) {
+        valoresOrdenados.push("");
+    }
 
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
