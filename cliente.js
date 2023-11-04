@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var mensajes = [];
+var mensajes = Array.from({ length: 12 }, () => ""); // Crear una matriz vacía con la longitud necesaria
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -23,31 +23,29 @@ socket.onerror = function(error) {
 
 // Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
-inputElements.forEach(function(inputElement) {
+inputElements.forEach(function(inputElement, index) {
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(inputElement);
+        enviarMensaje(inputElement, index);
     });
 });
 
 // Agrega un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
-radioElements.forEach(function(radioElement) {
+radioElements.forEach(function(radioElement, index) {
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(radioElement);
+        enviarMensaje(radioElement, index);
     });
 });
 
-function enviarMensaje(inputElement) {
+function enviarMensaje(inputElement, index) {
+    // Verifica el tipo de campo y obtén el valor adecuado
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
-    var id = inputElement.id;
-    // Obtener el índice del mensaje correspondiente o agregar uno nuevo
-    var index = mensajes.findIndex(function(mensaje) {
-        return mensaje.id === id;
+    mensajes[index] = valor;
+
+    // Filtra los valores vacíos para evitar enviarlos
+    var mensajesFiltrados = mensajes.filter(function (mensaje) {
+        return mensaje !== "";
     });
-    if (index !== -1) {
-        mensajes[index].valor = valor;
-    } else {
-        mensajes.push({ id: id, valor: valor });
-    }
-    socket.send(JSON.stringify(mensajes));
+
+    socket.send(JSON.stringify(mensajesFiltrados));
 }
