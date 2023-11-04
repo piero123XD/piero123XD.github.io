@@ -37,14 +37,10 @@ radioElements.forEach(function(radioElement, index) {
     });
 });
 
-function enviarMensaje(inputElement) {
-    var index = inputElement.getAttribute('data-index');
-    if (index !== null) {
-        mensajes[index] = inputElement.value;
-    }
-    
-    // Enviar el arreglo completo al servidor después de cada cambio
-    socket.send(JSON.stringify(mensajes));
+function enviarMensaje(inputElement, index) {
+    mensajes[index] = inputElement.value;
+    socket.send(JSON.stringify(mensajes.filter(Boolean)));
 }
+
 
 
