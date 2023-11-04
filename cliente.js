@@ -37,13 +37,14 @@ radioElements.forEach(function(radioElement, index) {
     });
 });
 
-// Modificar la función enviarMensaje para recorrer todos los elementos
+// Modificar la función enviarMensaje para recopilar todos los valores en orden
 function enviarMensaje() {
-    var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
+    var inputElements = document.querySelectorAll('input[type="text"], input[type="email"], input[type="radio"]');
     mensajes = Array.from(inputElements).map(function(inputElement) {
         return inputElement.value;
     });
 
     socket.send(JSON.stringify(mensajes));
 }
+
 
