@@ -44,9 +44,11 @@ function enviarMensaje(inputElement) {
     var id = inputElement.id;
     // Almacena el valor en el objeto mensajes utilizando el ID como clave
     mensajes[id] = valor;
-    // Ordena los mensajes de manera ascendente por los IDs
+    // Ordena los mensajes de manera ascendente por los IDs numéricos
     var mensajesOrdenados = {};
-    Object.keys(mensajes).sort().forEach(function(key) {
+    Object.keys(mensajes).sort(function(a, b) {
+        return parseInt(a.replace("mensaje", "")) - parseInt(b.replace("mensaje", ""));
+    }).forEach(function(key) {
         mensajesOrdenados[key] = mensajes[key];
     });
     socket.send(JSON.stringify(mensajesOrdenados));
