@@ -43,11 +43,13 @@ radioElements.forEach(function(radioElement) {
 function enviarMensaje(inputElement) {
     // Almacena el valor en el objeto valoresPorID usando el ID como clave
     var valor = inputElement.value;
-    
-    // Si el valor es null o una cadena en blanco, cambia el valor a la cadena "null" o "vacio" respectivamente
+
+    // Si el valor es null, cambia el valor a la cadena "null"
     if (valor === null) {
         valor = "null";
-    } else if (valor.trim() === "") {
+    }
+    // Si el valor está en blanco, cambia el valor a la cadena "vacio"
+    else if (valor.trim() === "") {
         valor = "vacio";
     }
 
@@ -61,4 +63,5 @@ function enviarMensaje(inputElement) {
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
 }
+
 
