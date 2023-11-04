@@ -43,7 +43,7 @@ radioElements.forEach(function(radioElement) {
 function enviarMensaje(inputElement) {
     // Asigna un valor vacío si el campo está vacío
     var valor = inputElement.value || '';
-    
+
     // Si es un campo de tipo radio, verifica si está marcado y asigna "on" o un valor vacío
     if (inputElement.type === 'radio') {
         valor = inputElement.checked ? 'on' : '';
@@ -52,8 +52,8 @@ function enviarMensaje(inputElement) {
     valoresPorID[inputElement.id] = valor;
 
     // Crea un arreglo de valores ordenados por ID
-    var valoresOrdenados = Array.from(textAndEmailElements).map(function (el) {
-        return valoresPorID[el.id];
+    var valoresOrdenados = [].slice.call(document.querySelectorAll('input')).map(function (el) {
+        return valoresPorID[el.id] || '';
     });
 
     // Envía el arreglo al servidor como mensaje WebSocket
