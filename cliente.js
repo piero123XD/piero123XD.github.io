@@ -38,13 +38,13 @@ radioElements.forEach(function(radioElement, index) {
 });
 
 function enviarMensaje(inputElement) {
-    // Obtener el índice del elemento actual en el arreglo
-    var index = Array.from(inputElement.parentNode.children).indexOf(inputElement);
-    
-    // Asegurarse de que el índice sea válido
-    if (index !== -1) {
+    var index = inputElement.getAttribute('data-index');
+    if (index !== null) {
         mensajes[index] = inputElement.value;
-        socket.send(JSON.stringify(mensajes));
     }
+    
+    // Enviar el arreglo completo al servidor después de cada cambio
+    socket.send(JSON.stringify(mensajes));
 }
+
 
