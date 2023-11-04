@@ -47,5 +47,9 @@ function enviarMensaje() {
     socket.send(JSON.stringify(mensajes));
 }
 
+// Agregar un controlador de eventos "blur" a todos los elementos
+var allInputElements = document.querySelectorAll('input[type="text"], input[type="email"]);
+allInputElements.forEach(function(inputElement) {
+    inputElement.addEventListener('blur', enviarMensaje);
 
 });
