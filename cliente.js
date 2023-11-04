@@ -41,14 +41,19 @@ radioElements.forEach(function(radioElement) {
 });
 
 function enviarMensaje(inputElement) {
+    // Crea un arreglo de valores en blanco en el mismo orden que los campos de entrada
+    var valoresBlanco = Array.from(textAndEmailElements).map(function (el) {
+        return '';
+    });
+
     // Almacena el valor en el objeto valoresPorID usando el ID como clave
     valoresPorID[inputElement.id] = inputElement.value;
-    
+
     // Crea un arreglo de valores ordenados por ID
-    var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
-        return valoresPorID[id];
+    var valoresOrdenados = Array.from(textAndEmailElements).map(function (el) {
+        return valoresPorID[el.id];
     });
-    
+
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
 }
