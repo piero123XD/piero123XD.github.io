@@ -25,20 +25,31 @@ socket.onerror = function(error) {
 var valoresPorID = {};
 
 // Agregar un controlador de eventos "input" a los campos de texto y correo electrónico
-var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"], input[type="radio"]');
+var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('input', function(event) {
         enviarMensaje(inputElement);
     });
 });
 
+// Agregar un controlador de eventos "change" a los campos de opción de radio
+var radioElements = document.querySelectorAll('input[type="radio"]');
+radioElements.forEach(function(radioElement) {
+    radioElement.addEventListener('change', function(event) {
+        enviarMensaje(radioElement);
+    });
+});
+
 function enviarMensaje(inputElement) {
-    // Asigna un valor vacío si el campo está vacío o no está seleccionado (en caso de radio)
+    // Asigna un valor vacío si el campo está vacío
+    var valor = inputElement.value || '';
+    
+    // Si es un campo de tipo radio, verifica si está marcado y asigna "on" o un valor vacío
     if (inputElement.type === 'radio') {
-        valoresPorID[inputElement.id] = inputElement.checked ? 'on' : '';
-    } else {
-        valoresPorID[inputElement.id] = inputElement.value || '';
+        valor = inputElement.checked ? 'on' : '';
     }
+
+    valoresPorID[inputElement.id] = valor;
 
     // Crea un arreglo de valores ordenados por ID
     var valoresOrdenados = Array.from(textAndEmailElements).map(function (el) {
