@@ -7,8 +7,6 @@ socket.onopen = function(event) {
 
 socket.onmessage = function(event) {
     console.log("Mensaje recibido del servidor: " + event.data);
-    // Actualiza el arreglo mensajes con los valores recibidos del servidor
-    mensajes = JSON.parse(event.data);
 };
 
 socket.onclose = function(event) {
@@ -23,8 +21,8 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Arreglo inicial con diez elementos vacíos
-var valoresPorID = ["", "", "", "", "", "", "", "", "", "", "", ""];
+// Objeto para mantener un seguimiento de los valores por ID
+var valoresPorID = {};
 
 // Agregar un controlador de eventos "input" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
@@ -43,9 +41,14 @@ radioElements.forEach(function(radioElement) {
 });
 
 function enviarMensaje(inputElement) {
-    // Actualiza el valor correspondiente en el arreglo valoresPorID
+    // Almacena el valor en el objeto valoresPorID usando el ID como clave
     valoresPorID[inputElement.id] = inputElement.value;
-
+    
+    // Crea un arreglo de valores ordenados por ID
+    var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
+        return valoresPorID[id];
+    });
+    
     // Envía el arreglo al servidor como mensaje WebSocket
-    socket.send(JSON.stringify(valoresPorID));
+    socket.send(JSON.stringify(valoresOrdenados));
 }
