@@ -41,27 +41,27 @@ radioElements.forEach(function(radioElement) {
 });
 
 function enviarMensaje(inputElement) {
-    // Almacena el valor en el objeto valoresPorID usando el ID como clave
+    // Obtén el valor del campo de entrada
     var valor = inputElement.value;
 
-    // Si el valor es null, cambia el valor a la cadena "null"
+    // Si el valor es null o una cadena en blanco, cambia el valor a la cadena "null" o "vacio"
     if (valor === null) {
         valor = "null";
-    }
-    // Si el valor está en blanco, cambia el valor a la cadena "vacio"
-    else if (valor.trim() === "") {
+    } else if (valor.trim() === "") {
         valor = "vacio";
     }
 
+    // Almacena el valor en el objeto valoresPorID usando el ID como clave
     valoresPorID[inputElement.id] = valor;
-    
+
     // Crea un arreglo de valores ordenados por ID
     var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
         return valoresPorID[id];
     });
-    
+
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
 }
+
 
 
