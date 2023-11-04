@@ -42,9 +42,16 @@ radioElements.forEach(function(radioElement) {
 
 function enviarMensaje(inputElement) {
     // Almacena el valor en el objeto valoresPorID usando el ID como clave
-    valoresPorID[inputElement.id] = inputElement.value;
+    var valor = inputElement.value;
     
-    // Crea un arreglo de valores ordenados por ID, incluyendo los null y cadenas en blanco
+    // Si el valor es null, cambia el valor a la cadena "null"
+    if (valor === null) {
+        valor = "null";
+    }
+
+    valoresPorID[inputElement.id] = valor;
+    
+    // Crea un arreglo de valores ordenados por ID
     var valoresOrdenados = Object.keys(valoresPorID).sort().map(function(id) {
         return valoresPorID[id];
     });
@@ -52,3 +59,4 @@ function enviarMensaje(inputElement) {
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresOrdenados));
 }
+
