@@ -21,43 +21,34 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
-// Almacena una lista de los IDs de los elementos en el orden en que aparecen
-var elementIds = [];
-
 // Agrega un controlador de eventos "blur" a cada campo de entrada
 var inputElements = document.querySelectorAll('input[type="text"], input[type="email"]');
-inputElements.forEach(function(inputElement) {
-    var id = inputElement.id;
-    elementIds.push(id);
+inputElements.forEach(function(inputElement, index) {
+    var id = "mensaje" + pad(index, 2); // Función para formatear el ID
+    inputElement.id = id; // Asigna un ID único a cada elemento
     inputElement.addEventListener('blur', function(event) {
-        enviarMensaje(id);
+        enviarMensaje(inputElement, id);
     });
 });
 
 // Agrega un controlador de eventos "change" a los campos de opción de radio
 var radioElements = document.querySelectorAll('input[type="radio"]');
-radioElements.forEach(function(radioElement) {
-    var id = radioElement.id;
-    elementIds.push(id);
+radioElements.forEach(function(radioElement, index) {
+    var id = "mensaje" + pad(index, 2); // Función para formatear el ID
+    radioElement.id = id; // Asigna un ID único a cada elemento
     radioElement.addEventListener('change', function(event) {
-        enviarMensaje(id);
+        enviarMensaje(radioElement, id);
     });
 });
 
-function enviarMensaje(id) {
-    var inputElement = document.getElementById(id);
+// Función para formatear el ID con ceros a la izquierda
+function pad(num, size) {
+    var s = "00" + num;
+    return s.substr(s.length - size);
+}
+
+function enviarMensaje(inputElement, id) {
     var valor = inputElement.type === "radio" ? inputElement.value : inputElement.value;
     mensajes[id] = valor;
-
-    // Verifica si todos los mensajes han sido capturados
-    if (elementIds.every(function(elementId) {
-        return mensajes[elementId] !== undefined;
-    })) {
-        // Ordena los mensajes en función del orden de los IDs y los envía
-        var mensajesOrdenados = {};
-        elementIds.forEach(function(elementId) {
-            mensajesOrdenados[elementId] = mensajes[elementId];
-        });
-        socket.send(JSON.stringify(mensajesOrdenados));
-    }
+    socket.send(JSON.stringify(mensajes));
 }
