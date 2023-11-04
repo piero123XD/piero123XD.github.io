@@ -37,7 +37,14 @@ radioElements.forEach(function(radioElement, index) {
     });
 });
 
-function enviarMensaje(inputElement, index) {
-    mensajes[index] = inputElement.value;
-    socket.send(JSON.stringify(mensajes));
+function enviarMensaje(inputElement) {
+    // Obtener el índice del elemento actual en el arreglo
+    var index = Array.from(inputElement.parentNode.children).indexOf(inputElement);
+    
+    // Asegurarse de que el índice sea válido
+    if (index !== -1) {
+        mensajes[index] = inputElement.value;
+        socket.send(JSON.stringify(mensajes));
+    }
 }
+
