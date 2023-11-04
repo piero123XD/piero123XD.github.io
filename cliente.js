@@ -1,5 +1,5 @@
 var socket = new WebSocket("ws://localhost:8770");
-var valores = {};
+var mensajes = {};
 
 socket.onopen = function(event) {
     console.log("Conexión WebSocket abierta");
@@ -21,12 +21,14 @@ socket.onerror = function(error) {
     console.error("Error en la conexión WebSocket: " + error.message);
 };
 
+// Objeto para mantener un seguimiento de los valores por orden de ID
+var valoresPorID = {};
+
 // Agregar un controlador de eventos "input" a los campos de texto y correo electrónico
 var textAndEmailElements = document.querySelectorAll('input[type="text"], input[type="email"]');
 textAndEmailElements.forEach(function(inputElement) {
     inputElement.addEventListener('input', function(event) {
-        valores[inputElement.id] = inputElement.value;
-        enviarMensaje(valores);
+        enviarMensaje(inputElement);
     });
 });
 
@@ -34,15 +36,17 @@ textAndEmailElements.forEach(function(inputElement) {
 var radioElements = document.querySelectorAll('input[type="radio"]');
 radioElements.forEach(function(radioElement) {
     radioElement.addEventListener('change', function(event) {
-        valores[radioElement.id] = radioElement.value;
-        enviarMensaje(valores);
+        enviarMensaje(radioElement);
     });
 });
 
-function enviarMensaje(valores) {
-    var idsEnOrden = Object.keys(valores); // Obtener las IDs en el orden en que se han almacenado
-    var valoresEnOrden = idsEnOrden.map(function(id) {
-        return valores[id];
-    });
-    socket.send(JSON.stringify(valoresEnOrden));
+function enviarMensaje(inputElement) {
+    // Almacena el valor en el objeto valoresPorID usando el ID como clave
+    valoresPorID[inputElement.id] = inputElement.value;
+    
+    // Crea un arreglo de valores ordenados por ID
+    var valoresOrdenados = Object.values(valoresPorID).filter(Boolean);
+    
+    // Envía el arreglo al servidor como mensaje WebSocket
+    socket.send(JSON.stringify(valoresOrdenados));
 }
