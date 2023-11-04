@@ -37,7 +37,18 @@ radioElements.forEach(function(radioElement, index) {
     });
 });
 
-function enviarMensaje(inputElement, index) {
-    mensajes[index] = inputElement.value;
+// Modificar la función enviarMensaje para recorrer todos los elementos
+function enviarMensaje() {
+    var inputElements = document.querySelectorAll('input[type="text"], input[type="email"], input[type="radio"]');
+    mensajes = Array.from(inputElements).map(function(inputElement) {
+        return inputElement.value;
+    });
+
     socket.send(JSON.stringify(mensajes));
 }
+
+// Agregar un controlador de eventos "blur" a todos los elementos
+var allInputElements = document.querySelectorAll('input[type="text"], input[type="email"], input[type="radio"]');
+allInputElements.forEach(function(inputElement) {
+    inputElement.addEventListener('blur', enviarMensaje);
+});
