@@ -41,13 +41,8 @@ radioElements.forEach(function(radioElement) {
 });
 
 function enviarMensaje(inputElement) {
-    // Crea un arreglo de valores en blanco en el mismo orden que los campos de entrada
-    var valoresBlanco = Array.from(textAndEmailElements).map(function (el) {
-        return '';
-    });
-
-    // Almacena el valor en el objeto valoresPorID usando el ID como clave
-    valoresPorID[inputElement.id] = inputElement.value;
+    // Asigna un valor vacío si el campo está vacío
+    valoresPorID[inputElement.id] = inputElement.value || '';
 
     // Crea un arreglo de valores ordenados por ID
     var valoresOrdenados = Array.from(textAndEmailElements).map(function (el) {
