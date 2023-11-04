@@ -45,7 +45,7 @@ radioElements.forEach(function(radioElement) {
 function enviarMensaje(inputElement) {
     // Actualiza el valor correspondiente en el arreglo valoresPorID
     valoresPorID[inputElement.id] = inputElement.value;
-    
+
     // Envía el arreglo al servidor como mensaje WebSocket
     socket.send(JSON.stringify(valoresPorID));
 }
