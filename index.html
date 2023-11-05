@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>9</title>
+  <title>Ejecutar función "Hola Mundo" en Google Sheets</title>
 </head>
 <body>
-    <div id="inputs">
-        <!-- Generar 12 inputs con un bucle -->
-        <input type="email" placeholder="Escribe un mensaje" id="mensaje0">
-        <input type="radio" placeholder="Escribe un mensaje" id="mensaje1">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje2">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje3">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje4">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje5">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje6">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje7">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje8">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje9">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje10">
-        <input type="text" placeholder="Escribe un mensaje" id="mensaje11">
-    </div>
-    <script src="cliente.js"></script>
+  <form id="miFormulario">
+    <input type="submit" value="Ejecutar función 'Hola Mundo'" onclick="llamarFuncionHolaMundo(event)">
+  </form>
+
+  <script>
+    function llamarFuncionHolaMundo(event) {
+      event.preventDefault(); // Evita que el formulario se envíe normalmente
+
+      // Realiza una solicitud HTTP GET a la URL de tu API de Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbw1q3uR6KRzDhRxMTaCuQW3Hw4P0Z8tGWgEa4jAoDQZGHWeyN-I6LJI8XNFOqLt31s92Q/exec', {
+        method: 'GET',
+      })
+      .then(response => response.text())
+      .then(data => {
+        // Maneja la respuesta de la función de Google Apps Script (no es necesario mostrarla)
+        console.log(data);
+
+        // Puedes redirigir a una página de confirmación o mostrar un mensaje al usuario si lo deseas
+        alert("La función 'Hola Mundo' se ha ejecutado y se ha establecido '¡Hola, mundo!' en la celda A1.");
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
 </body>
 </html>
+
